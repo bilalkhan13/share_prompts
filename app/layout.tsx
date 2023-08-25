@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 
 import Nav from "@components/Nav";
+import Provider from "@components/Provider";
 
 import "@styles/global.css";
 
@@ -16,16 +17,18 @@ type childrenProps = {
 const RootLayout = ({ children }: childrenProps) => {
   return (
     <html lang="en">
-      <body>
-        <div className="main">
-          <div className="gradient"></div>
-        </div>
+      <Provider>
+        <body>
+          <div className="main">
+            <div className="gradient"></div>
+          </div>
 
-        <main className="app">
-          <Nav />
-          {children}
-        </main>
-      </body>
+          <main className="app">
+            <Nav />
+            {children}
+          </main>
+        </body>
+      </Provider>
     </html>
   );
 };
