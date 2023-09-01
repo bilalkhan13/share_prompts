@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 let isConnected = false;
+require('dotenv').config()
 
 export const connectToDB = async () => {
   mongoose.set("strictQuery", true);
@@ -11,10 +12,8 @@ export const connectToDB = async () => {
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: "share_prompt",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    await mongoose.connect("mongodb+srv://admin:King@007@quiz.7kaal6y.mongodb.net/", {
+      dbName: "share_prompt"
     });
 
     isConnected = true;

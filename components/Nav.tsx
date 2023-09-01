@@ -10,6 +10,8 @@ interface Provider {
 }
 
 const Nav: React.FC = () => {
+
+  const { data: session } = useSession();
   const isUserLoggedIn = true; // You might get this value from your session
 
   const [providers, setProviders] = useState<Record<string, Provider> | null>(
@@ -18,12 +20,12 @@ const Nav: React.FC = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
-    const fetchProviders = async () => {
+    const setUpProviders = async () => {
       const response = await getProviders();
       setProviders(response);
     };
 
-    fetchProviders();
+    setUpProviders();
   }, []);
 
   return (
@@ -40,7 +42,7 @@ const Nav: React.FC = () => {
       </Link>
 
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-prompt" className="black_btn">
               Create Post
@@ -55,13 +57,14 @@ const Nav: React.FC = () => {
             </button>
 
             <Link href="/profile">
+              {session?.user?.image &&
               <Image
-                src="/assets/images/logo.svg"
+                src={session?.user?.image}
                 alt="profile picture"
                 width={37}
                 height={37}
                 className="rounded-full"
-              />
+              />}
             </Link>
           </div>
         ) : (
@@ -72,8 +75,9 @@ const Nav: React.FC = () => {
                   type="button"
                   key={provider.name}
                   onClick={() => signIn(provider.id)}
+                  className='black_btn'
                 >
-                  {provider.name}
+                   Sign in
                 </button>
               ))}
           </>
@@ -84,14 +88,15 @@ const Nav: React.FC = () => {
       <div className="sm:hidden flex relative">
         {isUserLoggedIn ? (
           <div>
+            {session?.user?.image &&
             <Image
-              src="/assets/images/logo.svg"
+              src={session?.user?.image}
               alt="profile picture"
               width={37}
               height={37}
               className="rounded-full"
               onClick={() => setToggleDropdown((prev) => !prev)}
-            />
+            />}
 
             {toggleDropdown && (
               <div className="dropdown">
@@ -131,8 +136,9 @@ const Nav: React.FC = () => {
                   type="button"
                   key={provider.name}
                   onClick={() => signIn(provider.id)}
+                  className='black_btn'
                 >
-                  {provider.name}
+                  Sign In
                 </button>
               ))}
           </>
